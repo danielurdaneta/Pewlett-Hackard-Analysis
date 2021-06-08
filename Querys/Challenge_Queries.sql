@@ -32,3 +32,21 @@ INNER JOIN titles as ti
 ON e.emp_no = ti.emp_no
 WHERE (de.to_date = '9999-01-01') AND (e.birth_date BETWEEN '1965-01-01' AND '1965-12-31')
 ORDER BY e.emp_no;
+
+-- Get unique emp_no values from the dept_emp table
+
+SELECT DISTINCT ON(emp_no) emp_no, dept_no
+INTO unique_table2
+FROM dept_emp
+ORDER BY emp_no, to_date DESC
+
+-- Get the eligible employees by department
+
+SELECT COUNT(me.emp_no), d.dept_name
+FROM mentorship_eligibilty as me
+INNER JOIN unique_table2 as de
+ON me.emp_no = de.emp_no
+INNER JOIN departments as d 
+ON de.dept_no = d.dept_no
+GROUP BY d.dept_name
+ORDER BY count DESC
