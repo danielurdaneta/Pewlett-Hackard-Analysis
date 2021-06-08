@@ -2,7 +2,7 @@
 
 ## Overview of the analysis
 
-The purpose of this project was to analyze Pewlett-Hackard database and deliver valuable insight to the manegment. This database contains the company information as employee name, salary, title, department, among others. We did this using SQL in PostgreSQL.
+The purpose of this project was to analyze Pewlett-Hackard database and deliver valuable insight to the management. This database contains the company information as employee name, salary, title, department, among others. We did this using SQL in PostgreSQL.
 
 ## Results
 
@@ -52,17 +52,26 @@ From this query we can extract the following information:
 Adding up the employees of all departments, we can see there is 90,398 employees about to retire.
 
 - Are there enough qualified, retirement-ready employees in the departments to mentor the next generation of Pewlett Hackard employees?
-There are 1,549 employees eligibles for the mentoring program and 90,398 employees about to retire, assuming that 100% of all elegible employees accept to enter the mentoring program it would be 58 employees per mentor, which may not be enough. 
+
+There are 1,549 employees eligibles for the mentoring program and 90,398 employees about to retire, assuming that 100% of all eligible employees accept to enter the mentoring program it would be 58 employees per mentor, which may not be enough. 
 
 For further insight we can evaluate the following questions:
 
-- As the Development department is the one with most retiring employees, how many employees of this department are elegible for the mentoring program?
+- Which is the department with most employees eligible for mentorship?
 
-Using the following code we filter the information we need:
+To get the answer we first need to get unique values in the "emp_no" column from the demp_emp table (as we can have employees who changed departments over time):
+
+```
+SELECT DISTINCT ON(emp_no) emp_no, dept_no
+INTO unique_table2
+FROM dept_emp
+ORDER BY emp_no, to_date DESC
+```
+Using the following code we filter the information we need from the mentorship_eligibilty table:
 ```
 SELECT COUNT(me.emp_no), d.dept_name
 FROM mentorship_eligibilty as me
-INNER JOIN dept_emp as de
+INNER JOIN unique_table2 as de
 ON me.emp_no = de.emp_no
 INNER JOIN departments as d 
 ON de.dept_no = d.dept_no
@@ -71,11 +80,12 @@ ORDER BY count DESC
 ```
 And retrieve the following table:
 
-![retiring_titles](https://user-images.githubusercontent.com/81272629/121222010-c483b380-c84b-11eb-8dbd-ebb78b6bf3ce.png)
-
-As we can see, the Development department is the one with most employees eligible for the mentoring program, for this reason, they may be enough to satisfy the demand of future vacants
-
-- 
+![retiring_titles](https://user-images.githubusercontent.com/81272629/121249040-be9ccb00-c869-11eb-8da7-7f9c95b57eec.png)
 
 
+As we can see, the Development department is the one with most employees eligible for the mentoring program.
+
+- Which is the department with least employees eligible for mentorship? 
+
+The finance department have 64 employees eligible for mentorship, and in such a large company as Pewlett-Hackard this number may not be enough to train all the new employees coming due the "silver tsunami".
 
