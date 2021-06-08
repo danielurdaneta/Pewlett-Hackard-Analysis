@@ -36,4 +36,30 @@ ORDER BY e.emp_no;
 ```
 In this table are 1549 employees, with this insight the company's management is able to make decision about the nature of the mentoring program they want to set 
 
-##
+## Summary
+
+For further insight we can evaluate the following questions:
+
+- As the Development department is the one with most retiring employees, how many employees of this department are elegible for the mentoring program?
+
+Using the following code we filter the information we need:
+```
+SELECT COUNT(me.emp_no), d.dept_name
+FROM mentorship_eligibilty as me
+INNER JOIN dept_emp as de
+ON me.emp_no = de.emp_no
+INNER JOIN departments as d 
+ON de.dept_no = d.dept_no
+GROUP BY d.dept_name
+ORDER BY count DESC
+```
+And retrieve the following table:
+
+![retiring_titles](https://user-images.githubusercontent.com/81272629/121222010-c483b380-c84b-11eb-8dbd-ebb78b6bf3ce.png)
+
+As we can see, the Development department is the one with most employees eligible for the mentoring program, for this reason, they may be enough to satisfy the demand of future vacants
+
+
+
+
+
