@@ -1,1 +1,39 @@
-# Pewlett-Hackard-Analysis
+# Pewlett-Hackard Analysis
+
+## Overview of the analysis
+
+The purpose of this project was to analyze Pewlett-Hackard database and deliver valuable insight to the manegment. This database contains the company information as employee name, salary, title, department, among others. We did this using SQL in PostgreSQL.
+
+## Results
+
+- In the following code we select the column emp_no (employee number) and the column title from te table "unique_table", then create a table named "retiring_titles" grouping by titles and ordering the table by the count column in a descending order
+
+```
+SELECT COUNT(emp_no), title
+INTO retiring_titles
+FROM unique_table
+GROUP BY title
+ORDER BY count DESC;
+
+```
+This query deliver the amount of employees that are about to retire per position:
+
+![retiring_titles](https://user-images.githubusercontent.com/81272629/121216730-cc8d2480-c846-11eb-8c02-076809d51669.png)
+
+As we can see, most of the employees who are about to retire have Senior positions, for this reason, the company must begin to train or hire personnel for these more qualified positions.
+
+- In the following code we create a mentorship_eligibility table which deliver current employees with enough experience to be elegible for a mentorship program, as well as their birth date, title and dates within the company 
+```
+SELECT DISTINCT ON(e.emp_no) e.emp_no, e.first_name, e.last_name, e.birth_date, de.from_date, de.to_date, ti.title
+INTO mentorship_eligibilty
+FROM employees as e
+INNER JOIN dept_emp as de 
+ON e.emp_no = de.emp_no
+INNER JOIN titles as ti
+ON e.emp_no = ti.emp_no
+WHERE (de.to_date = '9999-01-01') AND (e.birth_date BETWEEN '1965-01-01' AND '1965-12-31')
+ORDER BY e.emp_no;
+```
+In this table are 1549 employees, with this insight the company's management is able to make decision about the nature of the mentoring program they want to set 
+
+##
