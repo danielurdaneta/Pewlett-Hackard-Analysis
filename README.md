@@ -20,9 +20,16 @@ This query deliver the amount of employees that are about to retire per position
 
 ![retiring_titles](https://user-images.githubusercontent.com/81272629/121216730-cc8d2480-c846-11eb-8c02-076809d51669.png)
 
-As we can see, most of the employees who are about to retire have Senior positions, for this reason, the company must begin to train or hire personnel for these more qualified positions.
+From this query we can extract the following information:
 
-- In the following code we create a mentorship_eligibility table which deliver current employees with enough experience to be elegible for a mentorship program, as well as their birth date, title and dates within the company 
+1-  Most of the employees who are about to retire have Senior positions, for this reason, the company must begin to train or hire personnel for these more qualified positions. 
+
+2- There is only 2 employees in a manager position about to retire, for this reason, it may not be worth it to include managers in the mentorship program.
+
+3- Adding up the employees of all departments, we can see there is 90,398 employees about to retire.
+
+
+- In the following code we create a mentorship_eligibility table which deliver current employees with enough experience to be eligible for a mentorship program, as well as their birth date, title and dates within the company 
 ```
 SELECT DISTINCT ON(e.emp_no) e.emp_no, e.first_name, e.last_name, e.birth_date, de.from_date, de.to_date, ti.title
 INTO mentorship_eligibilty
@@ -34,9 +41,18 @@ ON e.emp_no = ti.emp_no
 WHERE (de.to_date = '9999-01-01') AND (e.birth_date BETWEEN '1965-01-01' AND '1965-12-31')
 ORDER BY e.emp_no;
 ```
-In this table are 1549 employees, with this insight the company's management is able to make decision about the nature of the mentoring program they want to set 
+From this query we can extract the following information:
+
+1- In this table are 1549 employees, with this insight the company's management is able to make decision about the nature of the mentoring program they want to set 
 
 ## Summary
+
+- How many roles will need to be filled as the "silver tsunami" begins to make an impact?
+
+Adding up the employees of all departments, we can see there is 90,398 employees about to retire.
+
+- Are there enough qualified, retirement-ready employees in the departments to mentor the next generation of Pewlett Hackard employees?
+There are 1,549 employees eligibles for the mentoring program and 90,398 employees about to retire, assuming that 100% of all elegible employees accept to enter the mentoring program it would be 58 employees per mentor, which may not be enough. 
 
 For further insight we can evaluate the following questions:
 
@@ -59,7 +75,7 @@ And retrieve the following table:
 
 As we can see, the Development department is the one with most employees eligible for the mentoring program, for this reason, they may be enough to satisfy the demand of future vacants
 
-
+- 
 
 
 
